@@ -1,0 +1,6 @@
+@SimpleSocialAPI_HostAddress = http://localhost:5031
+
+GET {{SimpleSocialAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
