@@ -1,24 +1,38 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PreserveCompilationContext>true</PreserveCompilationContext>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.0" />
+		<PackageReference Include="NUnit" Version="3.14.0" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+		<PackageReference Include="coverlet.collector" Version="6.0.0" />
+		<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.11" />
+	</ItemGroup>
 
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-  </PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SimpleSocialAPI\SimpleSocialAPI.csproj" CopyLocal="true" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageReference Include="NUnit" Version="3.14.0" />
-    <PackageReference Include="NUnit.Analyzers" Version="3.9.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<Using Include="NUnit.Framework" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Using Include="NUnit.Framework" />
-  </ItemGroup>
-
+	<Target Name="CopyDepsFiles" AfterTargets="Build">
+		<ItemGroup>
+			<AppDepsFiles Include="..\SimpleSocialAPI\bin\$(Configuration)\net8.0\*.deps.json" />
+			<AppRuntimeConfigs Include="..\SimpleSocialAPI\bin\$(Configuration)\net8.0\*.runtimeconfig.json" />
+		</ItemGroup>
+		<Copy SourceFiles="@(AppDepsFiles)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+		<Copy SourceFiles="@(AppRuntimeConfigs)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+	</Target>
 </Project>
